@@ -69,7 +69,6 @@ export default class Start extends Component {
               <Text style={styles.button}>Start Chatting</Text>
             </TouchableOpacity>
 
-
           </View>
         </View>
       </ImageBackground >
