@@ -9,6 +9,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
+    /* Builds navigation between screens*/
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Start"
@@ -26,5 +27,6 @@ export default function App() {
 
   );
 }
+
 
 

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import { color } from 'react-native-reanimated';
 
 export default class Chat extends Component {
   constructor(props) {
     super(props);
   }
   render() {
+    /* Imports name and background color from Start.js */
     let name = this.props.route.params.name;
     let selectedColor = this.props.route.params.selectedColor;
 
@@ -14,10 +16,8 @@ export default class Chat extends Component {
     });
 
     return (
-      <View style={styles.container}>
-        <View style={styles.bgcolor(selectedColor)}>
-          <Text>Chat here!</Text>
-        </View>
+      <View style={[styles.container, { backgroundColor: selectedColor }]}>
+        <Text style={{ color: '#fff' }}>Chat here!</Text>
       </View>
     )
   }
@@ -26,10 +26,10 @@ export default class Chat extends Component {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    height: '100%',
+    justifyContent: "center",
+    alignItems: "center",
     flex: 1
-  },
-  bgcolor: (selectedColor) => ({
-    selectedColor: selectedColor,
-  })
+  }
 });
 
