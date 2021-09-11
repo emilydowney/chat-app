@@ -7,7 +7,7 @@ export default class Start extends Component {
     super(props);
     this.state = {
       name: '',
-      selectedColor: ''
+      selectedColor: '#8A95A5'
     }
   }
 
@@ -17,15 +17,19 @@ export default class Start extends Component {
         source={require('../img/background.png')} resizeMode="cover"
         style={styles.imageBack}
       >
-
+        {/* App title */}
         <View style={styles.start}>
           <Text style={styles.title}>Chat App</Text>
+
+
           <View style={styles.box}>
             <View style={styles.input}>
               <Image
                 style={styles.img}
                 source={require("../img/icon.png")}
               />
+
+              {/* Name input field */}
               <TextInput
                 style={styles.inputText}
                 onChangeText={(name) => this.setState({ name })}
@@ -34,6 +38,7 @@ export default class Start extends Component {
               />
             </View>
 
+            {/* Background color pickers */}
             <Text style={styles.colorPick}>Choose Background Color:</Text>
             <Text style={styles.colorContainer}>
               <TouchableOpacity
@@ -58,8 +63,11 @@ export default class Start extends Component {
               </TouchableOpacity>
             </Text>
 
+            {/* Button to chat screen */}
             <TouchableOpacity
-              style={styles.wrap}
+              style={[
+                styles.wrap,
+                { backgroundColor: this.state.selectedColor }]}
               onPress={() => {
                 this.props.navigation.navigate('Chat', {
                   name: this.state.name,
@@ -149,7 +157,8 @@ const styles = StyleSheet.create({
   colorContainer: {
     flexDirection: 'row',
     alignSelf: 'flex-start',
-    marginLeft: 20
+    marginLeft: 20,
+    justifyContent: 'space-between'
   },
   dark: {
     backgroundColor: '#090C08',
