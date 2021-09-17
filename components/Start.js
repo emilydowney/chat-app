@@ -42,21 +42,37 @@ export default class Start extends Component {
             <Text style={styles.colorPick}>Choose Background Color:</Text>
             <Text style={styles.colorContainer}>
               <TouchableOpacity
+                accessible={true}
+                accessibilityLabel="Pick a background color"
+                accessibilityHint="Selects a dark background"
+                accessibilityRole="button"
                 style={[styles.dark, styles.colors]}
                 onPress={() => this.setState({ selectedColor: "#090C08" })}
               >
               </TouchableOpacity>
               <TouchableOpacity
+                accessible={true}
+                accessibilityLabel="Pick a background color"
+                accessibilityHint="Selects a purple background"
+                accessibilityRole="button"
                 style={[styles.purple, styles.colors]}
                 onPress={() => this.setState({ selectedColor: "#474056" })}
               >
               </TouchableOpacity>
               <TouchableOpacity
+                accessible={true}
+                accessibilityLabel="Pick a background color"
+                accessibilityHint="Selects a gray background"
+                accessibilityRole="button"
                 style={[styles.gray, styles.colors]}
                 onPress={() => this.setState({ selectedColor: "#8A95A5" })}
               >
               </TouchableOpacity>
               <TouchableOpacity
+                accessible={true}
+                accessibilityLabel="Pick a background color"
+                accessibilityHint="Selects a green background"
+                accessibilityRole="button"
                 style={[styles.green, styles.colors]}
                 onPress={() => this.setState({ selectedColor: "#B9C6AE" })}
               >
@@ -153,12 +169,13 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 40 / 2,
+    borderColor: 'white',
+    borderWidth: 4,
   },
   colorContainer: {
     flexDirection: 'row',
     alignSelf: 'flex-start',
     marginLeft: 20,
-    justifyContent: 'space-between'
   },
   dark: {
     backgroundColor: '#090C08',

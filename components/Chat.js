@@ -1,7 +1,10 @@
 import React from 'react';
+import CustomActions from './CustomActions';
 import { Bubble, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
-import { StyleSheet, View, Platform, KeyboardAvoidingView } from 'react-native'; import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StyleSheet, View, Platform, KeyboardAvoidingView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
+import MapView from 'react-native-maps';
 
 // Importing firestore 
 const firebase = require('firebase');
@@ -26,7 +29,10 @@ export default class Chat extends React.Component {
       firebase.initializeApp(firebaseConfig);
     }
 
+    // Reference to messages collection
     this.referenceChatMessages = firebase.firestore().collection("messages");
+
+    this.referenceMessagesUser = null;
 
     // Initial state
     this.state = {
@@ -37,7 +43,7 @@ export default class Chat extends React.Component {
         name: '',
       },
       loggedInText: '',
-      isConnected: false
+      isConnected: false,
     }
   }
 
@@ -64,7 +70,9 @@ export default class Chat extends React.Component {
     //If online fetches from Firebase, else fetches from AsyncStorage
     NetInfo.fetch().then(connection => {
       if (connection.isConnected) {
-        this.setState({ isConnected: true });
+        this.setState({
+          isConnected: true
+        });
         console.log('online');
 
         // Anonymous user authentication //
@@ -102,8 +110,10 @@ export default class Chat extends React.Component {
   }
 
   componentWillUnmount() {
-    this.unsubscribe();
-    this.authUnsubscribe();
+    if (this.state.isConnected == true) {
+      this.unsubscribe();
+      this.authUnsubscribe();
+    };
   }
 
   //Checks for changes to Collection
@@ -115,12 +125,14 @@ export default class Chat extends React.Component {
       var data = doc.data();
       messages.push({
         _id: data._id,
-        text: data.text,
+        text: data.text || '',
         createdAt: data.createdAt.toDate(),
         user: {
           _id: data.user._id,
           name: data.user.name
-        }
+        },
+        image: data.image || null,
+        location: data.location || null,
       });
     });
     this.setState({
@@ -135,8 +147,10 @@ export default class Chat extends React.Component {
       uid: this.state.uid,
       _id: message._id,
       createdAt: message.createdAt,
-      text: message.text,
-      user: message.user
+      text: message.text || '',
+      user: message.user,
+      image: message.image || null,
+      location: message.location || null,
     });
   }
 
@@ -172,6 +186,7 @@ export default class Chat extends React.Component {
     }
   }
 
+
   //Function to alter chat bubble color//
   renderBubble(props) {
     return (
@@ -198,6 +213,35 @@ export default class Chat extends React.Component {
     }
   }
 
+  // Creates the Custom Actions button to handle images and location
+  renderCustomActions = (props) => {
+    return <CustomActions {...props} />;
+  };
+
+  // Render Custom View to show the location map
+  renderCustomView = (props) => {
+    const { currentMessage } = props;
+    if (currentMessage.location) {
+      return (
+        <MapView
+          style={{
+            width: 150,
+            height: 100,
+            borderRadius: 13,
+            margin: 3
+          }}
+          region={{
+            latitude: currentMessage.location.latitude,
+            longitude: currentMessage.location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
+      );
+    }
+    return null;
+  }
+
   render() {
     /* Imports name and background color from Start.js */
     let selectedColor = this.props.route.params.selectedColor;
@@ -205,13 +249,17 @@ export default class Chat extends React.Component {
 
     return (
       <View style={{ flex: 1, backgroundColor: selectedColor }}>
+
         <GiftedChat
+          renderActions={this.renderCustomActions}
+          renderCustomView={this.renderCustomView}
           renderBubble={this.renderBubble.bind(this)}
           renderInputToolbar={this.renderInputToolBar.bind(this)}
           messages={this.state.messages}
           onSend={(messages) => this.onSend(messages)}
           user={this.state.user}
         />
+
         {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null
         }
       </View>
