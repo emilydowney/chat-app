@@ -3,13 +3,19 @@ A React Native Chat application, built using Expo and designed to function on iO
 
 # Setup
 * Clone this repo 
-```git clone https://github.com/emilydowney/chat-app```
+```
+git clone https://github.com/emilydowney/chat-app
+```
 * Inside the project's main directory, install the needed dependencies.
-```npm install```
+```
+npm install
+```
 * Install the Expo app
 * Setup your own database using Google Firestore. For help with this process, see the documentation page: https://firebase.google.com/docs/firestore (In addition, be sure to change database information within the source code.)
 * Run Expo in the terminal
-```expo start```
+```
+expo start
+```
 
 # Links
 The UI for this chat app was constructed using Gifted Chat:
